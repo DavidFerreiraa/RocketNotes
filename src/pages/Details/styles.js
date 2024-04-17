@@ -9,6 +9,12 @@ export const Container = styled.div`
     grid-template-areas: 
     "header"
     "content";
+
+    > main {
+        grid-area: content;
+        overflow-y: scroll;
+        padding: 6.4rem 0;
+    }
 `;
 
 export const Links = styled.ul`
@@ -20,5 +26,29 @@ export const Links = styled.ul`
         a {
             color: ${({ theme }) => theme.COLORS.WHITE};
         }
+    }
+`;
+
+export const Content = styled.div`
+    max-width: 55rem;
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+
+    > button:first-child {
+        align-self: end;
+    }
+
+    > h1 {
+        font-size: 3.6rem;
+        font-weight: 500;
+        padding-top: 6.4rem;
+    }
+
+    > p {
+        font-size: 1.6rem;
+        margin-top: 1.6rem;
+        text-align: justify;
     }
 `;

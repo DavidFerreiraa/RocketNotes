@@ -18,13 +18,21 @@ export function AuthProvider({ children }){
 
             api.defaults.headers.authorization = `Bearer ${jwtToken}`;
             setData({ user, jwtToken });
+            return toast.success(`Olá ${user.name}`);
         } catch (error) {
             if(error.response){
-                toast.error(error.response.data.message);
+                return toast.error(error.response.data.message);
             } else {
-                toast.error(error.response.data.message);
+                return toast.error(error.response.data.message);
             }
         }
+    }
+
+    function signOut(){
+        localStorage.removeItem("@rocketnotes:token");
+        localStorage.removeItem("@rocketnotes:user");
+
+        setData({});
     }
 
     useEffect(() => {
@@ -38,7 +46,11 @@ export function AuthProvider({ children }){
     }, [])
 
     return(
-        <AuthContext.Provider value={{ signIn, user: data.user }}>
+        <AuthContext.Provider value={{ 
+            signIn, 
+            signOut, 
+            user: data.user
+        }}>
             { children }
         </AuthContext.Provider>
     );

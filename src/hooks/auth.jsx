@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 import { api } from "../services/api"
 import { toast } from "react-toastify";
@@ -13,6 +13,9 @@ export function AuthProvider({ children }){
             const response = await api.post("/sessions", { email, password });
             const { user, jwtToken } = response.data;
 
+            localStorage.setItem("@rocketnotes:user", JSON.stringify(user));
+            localStorage.setItem("@rocketnotes:token", jwtToken);
+
             api.defaults.headers.authorization = `Bearer ${jwtToken}`;
             setData({ user, jwtToken });
         } catch (error) {
@@ -23,6 +26,16 @@ export function AuthProvider({ children }){
             }
         }
     }
+
+    useEffect(() => {
+        const jwtToken = localStorage.getItem("@rocketnotes:token");
+        const user = localStorage.getItem("@rocketnotes:user");
+
+        if( jwtToken && user ){
+            api.defaults.headers.authorization = `Bearer ${jwtToken}`;
+            setData({ user: JSON.parse(user), jwtToken });
+        }
+    }, [])
 
     return(
         <AuthContext.Provider value={{ signIn, user: data.user }}>

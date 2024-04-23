@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import { Background, Container, Form } from "./styles";
 import { api } from "../../services/api";
@@ -66,7 +66,6 @@ export function SignUp(){
                 <Button title="Cadastrar" onClick={handleSignUp} />
                 <Link to="/">Voltar para o login</Link>
             </Form>
-            <ToastContainer />
         </Container>
     );
 }

@@ -35,6 +35,23 @@ export function AuthProvider({ children }){
         setData({});
     }
 
+    async function updateProfile({ user }){
+        try{
+            await api.put("/users", user);
+
+            localStorage.setItem("@rocketnotes:user", JSON.stringify(user));
+
+            setData({ user, jwtToken: data.token });
+            return toast.success("Perfil atualizado!");
+        } catch (error) {
+            if(error.response){
+                return toast.error(error.response.data.message);
+            } else {
+                return toast.error(error.response.data.message);
+            }
+        }
+    }
+
     useEffect(() => {
         const jwtToken = localStorage.getItem("@rocketnotes:token");
         const user = localStorage.getItem("@rocketnotes:user");
@@ -48,7 +65,8 @@ export function AuthProvider({ children }){
     return(
         <AuthContext.Provider value={{ 
             signIn, 
-            signOut, 
+            signOut,
+            updateProfile,
             user: data.user
         }}>
             { children }

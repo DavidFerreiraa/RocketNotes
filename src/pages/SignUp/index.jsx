@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FiUser, FiMail, FiLock } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
@@ -15,13 +15,18 @@ export function SignUp(){
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
 
+    const navigate = useNavigate();
+
     function handleSignUp(){
         if(!name || !email || !password) {
             return toast.warn("Preencha todos os campos!");
         }
 
         api.post("/users", { name, email, password }, )
-            .then(() => toast.success("Usuário cadastrado com sucesso!"))
+            .then(() => {
+                toast.success("Usuário cadastrado com sucesso!");
+                navigate("/")
+    })
             .catch(error => {
                 if (error.response) {
                     return toast.error(error.response.data.message);

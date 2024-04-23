@@ -16,7 +16,7 @@ export function AuthProvider({ children }){
             localStorage.setItem("@rocketnotes:user", JSON.stringify(user));
             localStorage.setItem("@rocketnotes:token", jwtToken);
 
-            api.defaults.headers.authorization = `Bearer ${jwtToken}`;
+            api.defaults.headers.common["Authorization"] = `Bearer ${jwtToken}`;
             setData({ user, jwtToken });
             return toast.success(`Olá ${user.name}`);
         } catch (error) {
@@ -40,7 +40,7 @@ export function AuthProvider({ children }){
         const user = localStorage.getItem("@rocketnotes:user");
 
         if( jwtToken && user ){
-            api.defaults.headers.authorization = `Bearer ${jwtToken}`;
+            api.defaults.headers.common["Authorization"] = `Bearer ${jwtToken}`;
             setData({ user: JSON.parse(user), jwtToken });
         }
     }, [])

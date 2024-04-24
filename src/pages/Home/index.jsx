@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 
 import { FiPlus } from 'react-icons/fi';
 import { api } from '../../services/api.js';
+import { useNavigate } from 'react-router-dom';
 
 export function Home(){
     const [ tags, setTags ] = useState([]);
@@ -17,6 +18,8 @@ export function Home(){
 
     const [ search, setSearch ] = useState("");
     const [ notes, setNotes ] = useState([]);
+
+    const navigate = useNavigate();
 
     function handleSelectedTag(tagName) {
         const alreadySelected = seletedTags.includes(tagName);
@@ -30,6 +33,10 @@ export function Home(){
         } else {
             setSelectedTags(prevState => [...prevState, tagName]);
         }
+    }
+
+    function handleDetails(noteId) {
+        navigate(`/details/${noteId}`);
     }
 
     useEffect(() => {
@@ -87,10 +94,10 @@ export function Home(){
                 <Section title="Minhas notas">
                     {   
                         notes.map(note => (
-                            console.log(note.id),
                             <Note 
                                 key={String(note.id)}
                                 data={note}
+                                onClick={() => handleDetails(note.id)}
                             />
                         ))
                     }

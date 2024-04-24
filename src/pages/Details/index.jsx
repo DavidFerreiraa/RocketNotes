@@ -14,8 +14,22 @@ export function Details() {
 
   const params = useParams();
 
-  function handleBack() {
+  async function handleRemove() {
+    const confirm = window.confirm("Deseja mesmo excluir a nota?");
 
+    if (confirm) {
+      try {
+        await api.delete(`/notes/${params.id}`);
+        navigate("/");
+        return;
+      } catch (error) {
+        if (error.response) {
+          return toast.error(error.response.data.message);
+        } else {
+          return toast.error("Não foi possível excluir a nota")
+        }
+      }
+    }
   }
 
   useEffect(() => {
@@ -34,7 +48,7 @@ export function Details() {
         data &&
           <main>
             <Content>
-              <ButtonText title="Excluir nota" isActive/>
+              <ButtonText title="Excluir nota" isActive onClick={handleRemove}/>
               <h1>{data.title}</h1>
               <p>{data.description}</p>
               { data.links &&

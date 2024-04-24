@@ -44,15 +44,20 @@ export function New(){
     }
 
     async function handleNewNote(){
-        await api.post("/notes", {
-            title,
-            description,
-            tags,
-            links
-        })
+        try {
+            await api.post("/notes", {
+                title,
+                description,
+                tags,
+                links
+            })
 
-        toast.success("Nota criada com sucesso!");
-        navigate("/");
+            toast.success("Nota criada com sucesso!");
+            navigate("/");
+        } catch(error) {
+            toast.error(error.response.data.message);
+        }
+
     }
 
     return(

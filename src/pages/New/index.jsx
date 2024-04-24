@@ -30,6 +30,10 @@ export function New(){
         setTags(prevState => [...prevState, newTag]);
         setNewTag("");
     }
+    
+    function handleRemoveTag(deleted){
+        setTags(prevState => prevState.filter(tag => tag !== deleted)); //return only tags differents of the deleted
+    }
 
     return(
         <Container>
@@ -72,13 +76,14 @@ export function New(){
                         <div className="tags">
                             {
                                 tags.map((tag) => (
-                                    <NoteItem value={tag}/>
+                                    <NoteItem value={tag} onClick={() => handleRemoveTag(tag)}/>
                                 ))
                             }
                             <NoteItem 
                                 isNew 
                                 placeholder="Nova tag" 
                                 onChange={(e) => setNewTag(e.target.value)}
+                                value={newTag}
                                 onClick={handleAddTag}
                             />
                         </div>

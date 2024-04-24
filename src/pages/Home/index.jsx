@@ -12,9 +12,19 @@ import { FiPlus } from 'react-icons/fi';
 import { api } from '../../services/api.js';
 
 export function Home(){
-    const [tags, setTags] = useState([]);
+    const [ tags, setTags ] = useState([]);
+    const [ seletedTags, setSelectedTags ] = useState([]);
 
-    
+    function handleSelectedTag(tagName) {
+        const alreadySelected = seletedTags.includes(tagName);
+
+        if (alreadySelected) {
+            setSelectedTags(prevState => prevState.filter(tag => tag !== tagName));
+        } else {
+            setSelectedTags(prevState => [...prevState, tagName]);
+        }
+    }
+
     useEffect(() => {
         async function fetchTags(){
             const response = await api.get("/tags");
@@ -31,14 +41,20 @@ export function Home(){
             <Header/>
             <Menu>
                 <li>
-                    <ButtonText title="Todos" isActive />
+                    <ButtonText 
+                        title="Todos"
+                        onClick={() => handleSelectedTag("all")}
+                        isActive={seletedTags.length === 0}
+                    />
                 </li>
                 {
                 tags && tags.map(tag => (
                     <li>
                         <ButtonText 
                             key={String(tag.id)}
-                            title={tag.name} 
+                            title={tag.name}
+                            onClick={() => handleSelectedTag(tag.name)}
+                            isActive={seletedTags.includes(tag.name)}
                         />
                     </li>
                 ))

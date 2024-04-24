@@ -44,6 +44,18 @@ export function New(){
     }
 
     async function handleNewNote(){
+        if (!title) {
+            return toast.warn("Suas notas precisam de um título.")
+        }
+
+        if (newTag) {
+            return toast.warn("Você deixou uma tag pra trás.😥");
+        }
+
+        if (newLink) {
+            return toast.warn("Você deixou um link pra trás.😥");
+        }
+
         try {
             await api.post("/notes", {
                 title,

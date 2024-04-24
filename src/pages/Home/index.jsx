@@ -15,6 +15,9 @@ export function Home(){
     const [ tags, setTags ] = useState([]);
     const [ seletedTags, setSelectedTags ] = useState([]);
 
+    const [ search, setSearch ] = useState("");
+    const [ notes, setNotes ] = useState([]);
+
     function handleSelectedTag(tagName) {
         const alreadySelected = seletedTags.includes(tagName);
 
@@ -33,6 +36,16 @@ export function Home(){
 
         fetchTags();
     }, [])
+
+    useEffect(() => {
+        async function fetchNotes(){
+            const response = await api.get(`/notes?search=${search}&tags=${seletedTags}`);
+
+            setNotes(response.data);
+        }
+
+        fetchNotes();
+    }, [seletedTags, search])
     return(
         <Container>
             <Brand>
@@ -48,36 +61,35 @@ export function Home(){
                     />
                 </li>
                 {
-                tags && tags.map(tag => (
-                    <li>
-                        <ButtonText 
-                            key={String(tag.id)}
-                            title={tag.name}
-                            onClick={() => handleSelectedTag(tag.name)}
-                            isActive={seletedTags.includes(tag.name)}
-                        />
-                    </li>
-                ))
+                    tags && tags.map(tag => (
+                        <li key={String(tag.id)}>
+                            <ButtonText 
+                                title={tag.name}
+                                onClick={() => handleSelectedTag(tag.name)}
+                                isActive={seletedTags.includes(tag.name)}
+                            />
+                        </li>
+                    ))
                 }
                 
             </Menu>
             <Search>
-                <Input placeholder="Pesquisar pelo título"/>
+                <Input 
+                    placeholder="Pesquisar pelo título"
+                    onChange={e => setSearch(e.target.value)}
+                />
             </Search>
             <Content>
                 <Section title="Minhas notas">
-                    <Note 
-                    data={{
-                        title: "React",
-                        tags: [
-                            {id: 1, name: "react"},
-                            {id: 2, name: "react"},
-                            {id: 3, name: "react"},
-                            {id: 4, name: "react"}
-                        ]
-                    }}
-                    
-                    />
+                    {   
+                        notes.map(note => (
+                            console.log(note.id),
+                            <Note 
+                                key={String(note.id)}
+                                data={note}
+                            />
+                        ))
+                    }
                 </Section>
             </Content>
             <NewNote to="/new">

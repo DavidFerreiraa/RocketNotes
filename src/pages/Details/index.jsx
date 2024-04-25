@@ -20,7 +20,7 @@ export function Details() {
     if (confirm) {
       try {
         await api.delete(`/notes/${params.id}`);
-        navigate("/");
+        navigate(-1);
         return;
       } catch (error) {
         if (error.response) {
@@ -73,7 +73,7 @@ export function Details() {
                   }
                 </Section>
               }
-              <Button title="Voltar ao início" onClick={() => navigate("/")}/>
+              <Button title="Voltar" onClick={() => navigate(-1)}/>
             </Content>
           </main>
       }

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { Textarea } from '../../components/Textarea';
 import { NoteItem } from '../../components/NoteItem';
@@ -12,6 +12,7 @@ import { api } from '../../services/api';
 import { toast } from 'react-toastify';
 
 import { useState } from 'react';
+import { ButtonText } from '../../components/ButtonText';
 
 export function New(){
     const [ title, setTitle ] = useState("");
@@ -65,7 +66,7 @@ export function New(){
             })
 
             toast.success("Nota criada com sucesso!");
-            navigate("/");
+            navigate(-1);
         } catch(error) {
             toast.error(error.response.data.message);
         }
@@ -79,7 +80,7 @@ export function New(){
                 <Form>
                     <header>
                         <h1>Criar nota</h1>
-                        <Link to="/">voltar</Link>
+                        <ButtonText onClick={() => navigate(-1)} title="Voltar"/>
                     </header>
 
                     <Input

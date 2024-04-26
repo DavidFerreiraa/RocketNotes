@@ -27,7 +27,7 @@ export function Header(){
                 />
                 <div>
                     <span>Bem-vindo</span>
-                    <strong>David Ferreira</strong>
+                    <strong>{user.name}</strong>
                 </div>
             </Profile>
             <Logout onClick={handleSignOut}>
